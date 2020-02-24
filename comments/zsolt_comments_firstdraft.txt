@@ -1,0 +1,21 @@
+- The introduction (and other sections) soon become very technical and detailed. For me, it is somewhat difficult to follow the narrative and flow. I would recommend that you start with a broader picture and then go into details.
+
+
+
+- Probably not for the paper, but for my benefit, I would like to see an HRD with the 30, 60 and 120 models, where the 1 Myr lifetime is shown. In Section 3, you introduce a lot of details including classification, and YSGs, RSGs, WRs: I am not sure any of the models ever evolve into that phase in 1 Myr. 
+
+
+
+- On the other hand, what I would recommend is showing a plot in the paper with Mdot vs time. I think that would be instructive and also highlight points that I would suggest discussing in some more detail. 
+
+
+
+- In that regard, I think it could be worthwhile to dedicate a subsection or perhaps an entire section to discuss the wind uncertainties in more detail. It is quite-well explained from the technical side how you couple a 1D-code output to provide Mdot and vesc. However, I think the physics could be elucidated in more detail: discussing the assumption of the spherically-symmetric outflow (a point that may be altered in future simulations), the impact of wind clumping, different mass-loss rates, etc. 
+
+
+
+- Figures: Some figures (e.g. Figure 8) are only mentioned very briefly (one sentence). I find the narrative a bit difficult sometimes: I would suggest that figures are introduced, discussed, and then you move onto the next figure. 
+
+
+
+- Overall, the simulations are very well documented and detailed. I find however that you would tremendously benefit from including a direct link to observations or predictions that you make and can be tested with observations. If the chimney-and-plume morphology is one of these, then you should build the paper around it: right now, this is quite a bit lost in the text. Perhaps even dedicate a subsection for this. 

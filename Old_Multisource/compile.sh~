@@ -1,0 +1,8 @@
+#!/bin/bash
+export DOCNAME=yulepaper
+#python abbreviate.py
+xelatex $DOCNAME
+bibtex $DOCNAME
+xelatex $DOCNAME
+xelatex $DOCNAME
+

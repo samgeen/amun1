@@ -1,0 +1,63 @@
+This is BibTeX, Version 0.99d (TeX Live 2019)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: amunpaper.aux
+The style file: mnras.bst
+Database file #1: samgeen.bib
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+"ArXiv e-prints" is a string literal, `journal' is a missing field
+---they aren't the same literal types for entry Wade2011
+while executing---line 1822 of file mnras.bst
+Warning--empty journal in Wade2011
+"ArXiv e-prints" is a string literal, `journal' is a missing field
+---they aren't the same literal types for entry Wade2011
+while executing---line 1822 of file mnras.bst
+"ArXiv e-prints" is a string literal, `journal' is a missing field
+---they aren't the same literal types for entry Wall2019
+while executing---line 1822 of file mnras.bst
+Warning--empty journal in Wall2019
+"ArXiv e-prints" is a string literal, `journal' is a missing field
+---they aren't the same literal types for entry Wall2019
+while executing---line 1822 of file mnras.bst
+You've used 78 entries,
+            2881 wiz_defined-function locations,
+            1391 strings with 26856 characters,
+and the built_in function-call counts, 36656 in all, are:
+= -- 2859
+> -- 2873
+< -- 202
++ -- 1238
+- -- 450
+* -- 4392
+:= -- 5954
+add.period$ -- 0
+call.type$ -- 78
+change.case$ -- 156
+chr.to.int$ -- 77
+cite$ -- 80
+duplicate$ -- 1761
+empty$ -- 1739
+format.name$ -- 686
+if$ -- 6271
+int.to.chr$ -- 2
+int.to.str$ -- 0
+missing$ -- 79
+newline$ -- 248
+num.names$ -- 564
+pop$ -- 358
+preamble$ -- 1
+purify$ -- 312
+quote$ -- 0
+skip$ -- 1086
+stack$ -- 0
+substring$ -- 1889
+swap$ -- 916
+text.length$ -- 314
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 699
+warning$ -- 2
+while$ -- 582
+width$ -- 0
+write$ -- 788
+(There were 4 error messages)

@@ -1,0 +1,3 @@
+# Reduce size by not copying big FITS files and png copies
+*.fits
+*.png

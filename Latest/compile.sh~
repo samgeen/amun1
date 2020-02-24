@@ -1,0 +1,8 @@
+#!/bin/bash
+export DOCNAME=amunpaper
+#python abbreviate.py
+pdflatex $DOCNAME
+bibtex $DOCNAME
+pdflatex $DOCNAME
+pdflatex $DOCNAME
+

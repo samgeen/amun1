@@ -1,0 +1,703 @@
+% AMUN Wind Paper, based on:
+% mnras_template.tex
+%
+% LaTeX template for creating an MNRAS paper
+%
+% v3.0 released 14 May 2015
+% (version numbers match those of mnras.cls)
+%
+% Copyright (C) Royal Astronomical Society 2015
+% Authors:
+% Keith T. Smith (Royal Astronomical Society)
+
+% Change log
+%
+% v3.0 May 2015
+%    Renamed to match the new package name
+%    Version number matches mnras.cls
+%    A few minor tweaks to wording
+% v1.0 September 2013
+%    Beta testing only - never publicly released
+%    First version: a simple (ish) template for creating an MNRAS paper
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Basic setup. Most papers should leave these options alone.
+\documentclass[a4paper,fleqn,usenatbib]{mnras}
+
+% MNRAS is set in Times font. If you don't have this installed (most LaTeX
+% installations will be fine) or prefer the old Computer Modern fonts, comment
+% out the following line
+\usepackage{newtxtext,newtxmath}
+\usepackage{makecell}
+% Depending on your LaTeX fonts installation, you might get better results with one of these:
+%\usepackage{mathptmx}
+%\usepackage{txfonts}
+
+% Use vector fonts, so it zooms properly in on-screen viewing software
+% Don't change these lines unless you know what you are doing
+\usepackage[T1]{fontenc}
+\usepackage{ae,aecompl}
+
+
+%%%%% AUTHORS - PLACE YOUR OWN PACKAGES HERE %%%%%
+
+% Only include extra packages if you really need them. Common packages are:
+\usepackage{graphicx}	% Including figure files
+\usepackage{amsmath}	% Advanced maths commands
+%\usepackage{amssymb}	% Extra maths symbols
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage{pifont}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%% AUTHORS - PLACE YOUR OWN COMMANDS HERE %%%%%
+
+% Please keep new commands to a minimum, and use \newcommand not \def to avoid
+% overwriting existing commands. Example:
+%\newcommand{\pcm}{\,cm$^{-2}$}	% per cm-squared
+\usepackage{abbrevs}
+\usepackage{xspace}
+\usepackage{xcolor}
+
+% ORCID stuff
+\usepackage{academicons}
+\definecolor{orcidlogocol}{HTML}{A6CE39}
+
+% FORCE ROMAN FONTS IN SUBSCRIPTS
+\begingroup
+\catcode`\_=\active
+\gdef_#1{\ensuremath{\sb{\mathrm{#1}}}}
+\endgroup
+\mathcode`\_=\string"8000
+\catcode`\_=12
+
+
+% Revision
+% \newcommand{\rev}{\textcolor{Plum}}
+\newcommand{\rev}{\textcolor{Black}}
+
+% Useful abbreviations
+\newcommand{\Msolar}{M$_{\odot}$\xspace}
+\newcommand{\Msolarpc}{M$_{\odot}$ / pc$^{2}$\xspace}
+\newcommand{\Zsolar}{Z$_{\odot\xspace}$\xspace}
+\newcommand{\Rsolar}{R$_{\odot\xspace}$\xspace}
+\newcommand{\Subvir}{$_{vir}$\xspace}
+%\newcommand{\atcc}{atoms/cm$^{3}$\xspace}
+\newcommand{\atcc}{cm$^{-3}$\xspace}
+\newcommand{\mhcc}{m$_{H}$.cm$^{-3}$\xspace}
+\newcommand{\simname}{\textsc}
+\newcommand{\Stromgren}{Str\"{o}mgren\xspace}
+\newcommand{\starsub}{$_{\normalfont\textsc{stars}}$\xspace}
+\newcommand{\stars}{\textsc{stars}\xspace}
+\newcommand{\turbsub}{$_{\normalfont\textsc{turb}}$\xspace}
+\newcommand{\turb}{\textsc{turb}\xspace}
+\newcommand{\rcoeff}{$\rho_{X,SFE}$}
+\newcommand{\AMUN}{\textsc{amun}}
+\newcommand{\HII}{H$~$\textsc{ii}\xspace}
+
+% Graphical commands
+%\newcommand{\tick}{$\checkmark$}
+\newcommand{\tick}{\hspace{1pt}\ding{51}}
+\newcommand{\cross}{\hspace{1pt}\ding{55}}
+
+% Abbreviations
+\newabbrev\ISM{Interstellar Medium (ISM)}[ISM]
+\newabbrev\IGM{Intergalactic Medium (IGM)}[IGM]
+\newabbrev\CSM{Circumstellar Medium (CSM)}[CSM]
+\newabbrev\WNM{Warm Neutral Medium (WNM)}[WNM]
+\newabbrev\WIM{Warm Ionised Medium (WIM)}[WIM]
+\newabbrev\CNM{Cold Neutral Medium (CNM)}[CNM]
+\newabbrev\IMF{Initial Mass Function (IMF)}[IMF]
+\newabbrev\CMF{Core Mass Function (IMF)}[IMF]
+\newabbrev\AMR{Adaptive Mesh Refinement (AMR)}[AMR]
+\newabbrev\HGB{Horizontal Giant Branch (HGB)}[HGB]
+\newabbrev\SFE{Star Formation Efficiency (SFE)}[SFE]
+\newabbrev\TSFE{Total Star Formation Efficiency (TSFE)}[TSFE]
+\newabbrev\OSFE{Observed Star Formation Efficiency (OSFE)}[OSFE]
+\newabbrev\SFR{Star Formation Rate (SFR)}[SFR]
+\newabbrev\YSOs{Young Stellar Objects (YSOs)}[YSOs]
+\newabbrev\YSO{Young Stellar Object (YSO)}[YSO]
+\newabbrev\PDF{Probability Distribution Function}[PDF]
+\newabbrev\PSF{Point Spread Function}[PSF]
+\newabbrev\LMC{Large Magellanic Cloud}[LMC]
+
+% Table gunk
+\renewcommand\theadalign{bc}
+\renewcommand\theadfont{\bfseries}
+
+\makeatletter
+\newcommand*\bigcdot{\mathpalette\bigcdot@{.5}}
+\newcommand*\bigcdot@[2]{\mathbin{\vcenter{\hbox{\scalebox{#2}{$\m@th#1\bullet$}}}}}
+\makeatother
+
+% Some gumf that makes spaces work properly because abbrevs is buggy: 
+% See: http://tex.stackexchange.com/questions/59840/how-to-prevent-getting-a-space-after-an-abbreviation-using-the-abbrevs-package
+\makeatletter
+\renewcommand\maybe@space@{%
+	% \@tempswatrue % <= this is in the original
+	\maybe@ictrue % <= this is new
+	\expandafter   \@tfor
+	\expandafter \reserved@a
+	\expandafter :%
+	\expandafter =%
+	\nospacelist
+	\do \t@st@ic
+	% \if@tempswa % <= this is in the original
+	\ifmaybe@ic % <= this is new
+	\space
+	\fi
+}
+\makeatother
+% Gumf ends
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%
+
+% Title of the paper, and the short title which is used in the headers.
+% Keep the title short and informative.
+\title[The Complexity of Wind Bubbles]{The Complex Geometry and Dynamical Role of Stellar Wind Bubbles}
+
+% The list of authors, and the short list which is used in the headers.
+% If you need two or more lines of authors, add an extra line using \newauthor
+\author[Geen et al]{
+Sam Geen$^{1}$\thanks{E-mail: s.t.geen@uva.nl} \href{https://orcid.org/0000-0002-3150-2543}{\textcolor{orcidlogocol}{\aiOrcid}},
+Rebekka Bieri$^{2}$ \href{https://orcid.org/0000-0002-4554-4488}{\textcolor{orcidlogocol}{\aiOrcid}},
+Joakim Rosdahl$^{3}$ \href{https://orcid.org/0000-0002-7534-8314}{\textcolor{orcidlogocol}{\aiOrcid}},
+Alex de Koter$^{1}$ \href{https://orcid.org/0000-0002-1198-3167}{\textcolor{orcidlogocol}{\aiOrcid}}
+\\
+% List of institutions
+$^{1}$ Anton Pannekoek Institute for Astronomy, Universiteit van Amsterdam, Science Park 904, 1098 XH Amsterdam, The Netherlands\\
+$^{2}$ Max-Planck-Institute for Astrophysics, Karl-Schwartzschild-Strasse 1, Garching, Germany\\
+$^{3}$ CRAL, Universit\'e de Lyon 1, CNRS UMR 5574, ENS-Lyon, 9 Avenue Charles Andr \'e, 69561, Saint-Genis-Laval, France\\
+}
+
+% These dates will be filled out by the publisher
+%\date{Accepted XXX. Received YYY; in original form ZZZ}
+\date{\today}
+
+% Enter the current year, for the copyright statements etc.
+%\pubyear{2018}
+
+% Don't change these lines
+\begin{document}
+\label{firstpage}
+\pagerange{\pageref{firstpage}--\pageref{lastpage}}
+\maketitle
+
+% Abstract of the paper
+\begin{abstract}
+Stellar winds contribute a large amount of energy to their surroundings by driving hot cavities into molecular clouds. In this paper, we use radiative magnetohydrodynamic simulations of molecular clouds containing individual stars of 30, 60 and 120 solar masses to study the relative effectiveness of winds and ionising radiation, and address the still open question of whether or not winds are effective at driving outflows. We find that winds contribute to the total radial momentum carried by the expanding nebula around the star at 10\% of the level of photoionisation feedback, and have only a small effect on the radial expansion of the nebula. Most of the energy from winds is lost to radiative cooling in the interface between the hot wind bubble and the photoionised gas, while the radiative cooling rate from the wind bubble is a few percent of the wind luminosity ($\frac{1}{2} \dot{m} v^2$). The complex ``chimney-and-plume'' geometry of the wind bubble gives the apperance that the bubble is volume-filling, despite not being the principal driver of the outflows. While winds from individual stars are not the principal mechanism for the dispersal of molecular clouds, they nonetheless shape their environment in complex ways.
+\end{abstract}
+
+% Select between one and six entries from the list of approved keywords.
+% Don't make up new ones.
+\begin{keywords}
+stars: massive, 
+stars: formation $<$ Stars, 
+ISM: H ii regions, 
+stars: winds, outflows,
+ISM: clouds $<$ Interstellar Medium (ISM), Nebulae,
+methods: numerical $<$ Astronomical instrumentation, methods, and techniques
+\end{keywords}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%% BODY OF PAPER %%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+\label{introduction}
+
+In this paper we study how massive stars influence their environment, specifically the interaction between photoionisation by stellar radiation and shocks from stellar winds. In this Section we introduce this work and its scientific context.
+
+\subsection{Overview}
+
+Stars form from dense clouds of gas that accrete onto the star. Energy emitted by stars is sometimes termed ``feedback'', because in sufficient quantities it has the capability to regulate future star formation. This is a multi-scale process, i.e. affecting a large range of spatial scales. On the smallest scales, stars regulate their own formation. This has been simulated by \cite{Kuiper2018} for massive stars, and by \cite{Bate2019} for clusters of less massive stars, amongst others. Stars also regulate gas flows on cloud scales of 1-100 pc \citep[see review by][]{Dale2015a}, create hot and warm regions and drive turbulence in the interstellar medium of galaxies \cite[e.g.][]{Gatto2017} and even drive flows out of galaxies \citep[see review on galactic winds by][]{Veilleux2005} and shape the ionisation state of most of the volume of the universe \citep[e.g.][]{Rosdahl2018}.
+
+In this paper we focus on the interaction between two feedback processes on cloud scales, namely photoionisation and winds, in the first Myr of the star's main sequence. The first, photoionisation feedback, is driven by the ionisation of interstellar material by photons above the ionisation energy of hydrogen (13.6 eV). This heats the gas to approximately $10^4$ K, which creates a pressure difference between the ionised gas and neutral material outside, causing the ionised bubble to expand. The second, stellar wind feedback, is the ejection of material from the surface of the star through radiation pressure in the star's envelope. In massive stars, this material can be accelerated to thousands of km/s. Both of these processes carry large amounts of energy in massive stars. Observational evidence of this is seen in surveys by, e.g., \cite{Doran2013}. However, it is not immediately obvious how these processes interact, and which process has the biggest impact on its surroundings.
+
+\subsection{Analytic Models for Winds and Photoionisation}
+
+Early analytic work by \cite{KahnF.D.1954}, \cite{SpitzerLyman1978}, \cite{Whitworth1979} and others confirms that photoionisation feedback is indeed capable of driving strong flows into the interstellar medium. The same is true in analytic work focussed on adiabatic stellar wind bubbles (bubbles of hot gas driven by stellar winds), by \cite{Avedisova1972}, \cite{Castor1975} and \cite{Weaver1977}.
+
+More recently, authors have studied the interaction between these two processes in more detail. Analytic calculations by \cite{Capriotti2001} suggest that winds are likely not to have a significant dynamical effect on the expansion of \HII regions compared to photoionisation. \cite{Krumholz2009} argue that leakage from stellar wind bubbles further reduces the dynamical input from winds, because pressure acting on the surface of the bubble is lost to the ambient medium. The analytic and hydrodynamic models of \cite{Haid2018} confirm this in a cloud environment, but argue that once the wind has entered the already ionised interstellar medium, photoionisation cannot drive further outflows and winds are required. In \cite{Geen2019}, we argue that winds become more important than photoionisation closer to more massive stars, due to the surface area over which the wind bubble's pressure is spread.
+
+The radiative cooling of wind bubbles reduces their efficiency by removing energy from the bubble. \cite{MacLow1988} invoke two modes of cooling, one in the bubble itself and one by evaporation and mixing from the dense shell into the bubble, the first of which is generally most effective. In a molecular cloud environment, this timescale is typically shorter than the lifetime of the star. 
+
+\cite{Silich2013} and \cite{Silich2018} produce two models, one in which the wind is adiabatic, and another which radiates efficiently and is driven purely by the instantaneous momentum input from the wind. These models are adopted by \cite{Rahner2017}, whose models transition between these modes after the cooling time in \cite{MacLow1988}. For massive clusters, winds do contribute a significant fraction of the force acting on the \HII region, peaking at around 3 Myr when massive stars begin to emit stronger winds during the Wolf-Rayet phase. However, \cite{Silich2017} argue that this depends on the ability for the wind bubbles around individual stars to merge, with isolated wind bubbles being less effective. \cite{Fierlinger2016} argue that winds in their work deposit around 2-3 times the energy from supernovae into the surrounding material, and further that careful modelling of the mixing of hot and cold gas at the bubble interface is crucial for obtaining correct bubble cooling rates.
+
+\subsection{Structure and Observability}
+
+\cite{Harper-Clark2009}, \cite{Yeh2012} and \cite{Yeh2013} construct quasi-static 1D models of \HII regions including photoionisation, radiation pressure and winds. They argue that models in which winds are not dynamically significant are consistent with nearby observed \HII regions. However, \cite{Pellegrini2007}, \cite{Pellegrini2011} and \cite{Pellegrini2012} argue that winds are required to explain the observed structure of these regions. This is dynamically significant since it sets the density of the photoionised region. However, they argue that there are certain regions, such as the Orion Veil, for which pressure equilibrium has not been reached and which diverge from such quasi-static models. \cite{Guedel2007} find extended x-ray emission inside this structure, arguing that winds are efficient in this region. \cite{Pabst2019} argue that such regions are best explained by adiabatic wind models, since the shells travel faster than the sound speed in ionised gas and the cooling from x-ray emission is low. \cite{Kruijssen2019} also argue that the depletion of molecular clouds by adiabatic winds and photoionisation should occur on similar timescales. 
+
+\subsection{Numerical Simulations}
+
+Because these (semi-)analytic analyses do not always agree, there is thus a need for more comprehensive, if costly, self-consistent hydrodynamic simulations that include radiative transfer to study this phenomenon. In this paper we focus on molecular cloud scales. Simulations on protostellar \citep[e.g.][]{Kuiper2018} \ISM \citep[e.g][]{Gatto2017} and galactic \citep[e.g.][]{Agertz2013} scales have considered the role of stellar winds in feedback in those regimes. These works argue that on smaller scales, winds require protostellar jets and outflows to be efficiently launched, while at larger scales winds add to the thermal pressure in hot gas in the galaxy. 
+
+Simulations of wind outflows on cloud scales by \cite{Rogers2013} and \cite{Rey-Raposo2017} demonstrate that winds escape preferentially through low-density channels, reducing their effectiveness at dispersing clouds. \cite{Dale2014}, who for the first time include both photoionisation and wind feedback with self-consistent star formation on a molecular cloud scale, find that the dynamical role of winds is small compared to photoionisation. \cite{Mackey2013} and \cite{Mackey2015} argue using simulations of stars moving at varying speeds with respect to the background that winds lose most of their energy to evaporation and mixing, with photoionisation being the principal driver of feedback structures around the star. Nonetheless, emission from the wind bubble interface is an important observational tracer \citep{Green2019}.
+
+Magnetic fields have often been omitted from simulations with radiative and wind feedback on a cloud scale due to the relative computational cost. Due to the high temperature of wind bubbles ($10^6$ to $10^8$ K, or even higher), satisfying the Courant condition forces the timestep of the hydrodynamic simulations to be much lower than for simulations with just photoionisation (with characteristic temperatures of $\sim10^4$ K). As smaller spatial scales are resolved, this timestep drops further. However, as we showed in \cite{Geen2015b}, magnetic fields are important for the structure of \HII regions since they limit the breakup of filaments and shells \citep[see also][]{Hennebelle2013}. Recent work by \cite{Wall2019} simulates self-consistent photoionisaton and winds with MHD, although since the paper focusses on resolving stellar multiplicity, in their highest resolution model they do not form stars larger than 10 \Msolar, which have weaker winds and ionising photon emission rates than more massive stars.
+
+\subsection{Outline of this Work}
+
+In this work, we present radiative magnetohydrodynamic simulations with both photoionisation and stellar winds. We use the same self-consistent star formation recipe described in \cite{Geen2018}. However, in order to isolate the effects of stellar winds in controlled conditions, we allow only one massive star to form of a pre-selected mass of either 30, 60 and 120 \Msolar. The advantage of this approach is that the source of early stellar feedback is in a realistic position within the cloud, i.e. a gas density peak. From this star we track feedback according to a full single-star evolution model (see Section \ref{methods}.) Sink particle accretion, representing the formation of lower mass stars, continues. We then follow the evolution of the wind bubble and photoionised region. Our goal is to study the geometry and energetics of the bubble to determine how a more complex 3D geometry shapes the interaction between winds, photoionisation and the neutral cloud.
+
+In Section \ref{methods} we discuss the methods used to set up and run our simulations. In Section \ref{results}, we present the results of these simulations, focussing on the evolution of the bubble and its energetics. In Section \ref{effective}, we discuss whether winds are indeed effective at shaping their environment. Finally, in Section \ref{conclusions} we present our conclusions.
+
+\section{Numerical Simulations}
+\label{methods}
+
+% Simulations
+\begin{table*}
+	\centering
+	\caption{List of simulations included in this paper. Cloud refers to the cloud setup used (see Table \ref{methods:cloudtable}). Star mass refers to the mass of star used as a source of winds and radiation. NOFB indicates that no feedback is included. UV indicates that ionising UV feedback and photoionisation are included. WIND indicates that stellar winds are included.}
+	\label{methods:simtable}
+	\begin{tabular}{lccccccc} % four columns, alignment for each
+		\hline
+		Simulation name     & Cloud             & Star Mass / \Msolar & UV     & WIND \\
+		\hline
+		\hline
+		NOFB                & \textsc{diffuse}  & -                   & \cross & \cross \\
+		\hline
+		UV\_30              & \textsc{diffuse}  & 30                  & \tick  & \cross \\
+		UVWIND\_30          & \textsc{diffuse}  & 30                  & \tick  & \tick  \\
+		\hline
+		UV\_60              & \textsc{diffuse}  & 60                  & \tick  & \cross \\
+		UVWIND\_60          & \textsc{diffuse}  & 60                  & \tick  & \tick  \\
+		\hline
+		UV\_120             & \textsc{diffuse}  & 120                 & \tick  & \cross \\
+		UVWIND\_120         & \textsc{diffuse}  & 120                 & \tick  & \tick  \\
+		\hline
+		NOFB\_DENSE         & \textsc{dense}    & -                   & \cross & \cross \\
+		\hline
+		UV\_120\_DENSE      & \textsc{dense}    & 120                 & \tick  & \cross \\
+		UVWIND\_120\_DENSE  & \textsc{dense}    & 120                 & \tick  & \tick  \\
+		\hline
+	\end{tabular}
+\end{table*}
+
+% Clouds
+\begin{table*}
+	\centering
+	\caption{List of cloud setups included in this paper. $M_c$ is the initial cloud mass in \Msolar. $t_{ff}$ is the initial free-fall time of the cloud as a whole. $t_{sound}$ is the sound crossing time. $t_{A}$ is the Alv\'en crossing time. $t_{RMS}$ is the $V_{RMS}$ crossing time. $L_{box}$ is the box length. $\Delta x$ is the minimum cell size.}
+	\label{methods:cloudtable}
+	\begin{tabular}{cccccccc} % four columns, alignment for each
+		\hline
+		Cloud name & log($M_c$ / M$_\odot$) & $t_{ff}$ / Myr & $t_{ff}/t_{sound}$ & $t_{ff}/t_{A}$ & $t_{ff}/t_{RMS}$ & $L_{box}$ / pc & $\Delta x_{min}$ / pc \\
+		\hline
+		\textsc{diffuse} & 4                & 4.22            & 0.15               & 0.2            & 2.0              & 122            & 0.03 \\
+		\textsc{dense}   & 4                & 0.527           & 0.075              & 0.2            & 2.0              & 30.4            & 0.03 \\
+	\end{tabular}
+\end{table*}
+
+In this Section we describe the numerical setup of the simulations used in this paper (see Table \ref{methods:simtable} for a full list). Each of the simulations describes an isolated molecular cloud with an initial turbulent velocity field, magnetic fields, self-gravity and stellar feedback. All of the simulations are performed with the radiative magnetohydrodynamic Eulerian \AMR code \textsc{RAMSES} \citep{Teyssier2002,Fromang2006,Rosdahl2013}. The simulations are performed using a similar setup to \citet{Geen2018}, which we describe in this Section. 
+
+This paper has been prepared according to the Research Data Management plan of the Anton Pannekoek Institute for Astronomy at the University of Amsterdam. Details of the data products and scripts used to generate the figures in this paper are given at ZENODO LINK, DOI reference DOIREFERENCE.
+
+\subsection{Initial Conditions and Refinement Criteria}
+
+In this paper we use two sets of initial conditions. In both of them, we define a cloud with an initially spherically symmetric density profile $\rho(r)$ defined by
+\begin{equation}
+\rho(r) = \rho_0 / (1 + (r/r_c)^2)
+\label{isothermal}
+\end{equation}
+where $\rho_0$ and $r_c$ are the central density and some characteristic radius. This profile is imposed out to a radius $r_{ini}=3 r_c$, where $\rho(r_{ini})=0.1 \rho_0$. Outside this, uniform sphere is imposed up to $2~r_{ini}$, with a density 0.1 times that just inside $r_{ini}$, or 0.01 $n_0$, to provide a reservoir of material to accrete onto the cloud. Outside this radius, the hydrogen number density is set to 1 cm$^{-3}$. The total length of the cubic volume simulated is 16 times $r_{ini}$. See Section \ref{methods:cooling} for a discussion of the chemical composition of the clouds. Note that the cloud evolves between the first timestep of the simulations and the time the first star forms.
+
+There are two clouds used in this study, both with an initial mass of $10^4$ \Msolar. One is a cloud similar to the nearby Gould belt as established in \cite{Geen2017} by comparing the column density distributions from our simulated clouds and the observed clouds. The other is denser, to test the effects of feedback in different environments. These are, respectively, the ``L'' and ``S'' clouds in \cite{Geen2017}. We list the properties of each of these clouds in Table \ref{methods:cloudtable}.
+
+At the first timestep, we impose a turbulent velocity field over the cloud. We do not apply further turbulent forcing to the cloud. Each cloud has a global free-fall time $t_{ff}$, defined by the average density of the isothermal sphere inside $r_{ini}$. We set the sound crossing time $t_{sound}$, the turbulent RMS velocity $V_{RMS}$ with a crossing time $t_{RMS}$ and an Alv\'en wave crossing time $t_{A}$.
+
+We ``relax'' the clouds by running the simulations without self-gravity for 0.5 $t_{ff}$, in order to mix the turbulent velocity and density fields, since the density field is initially spherically symmetric \citep[see][amongst others]{Klessen2000,Lee2016a}. After $0.5 t_{ff}$ we apply self-gravity to the cloud.
+
+The gas dynamics are traced on an octree mesh that refines adaptively when certain conditions are met. In other words, every time a cell at level $l$ fulfils certain criteria, it subdivides itself into 8 child cells at level $l+1$, where the cell size $\Delta x = L_{box} / 2^l$ for a box length $L_{box}$. We refine everywhere up to level 7, giving a cube with $2^7=128$ cells on a side. Inside a sphere of diameter $8 r_{ini}$ we fully refine up to level 9, i.e. two further levels. Finally, any gas cell that is ten times denser than the Jeans density or has a mass above 0.25 \Msolar anywhere in the simulation volume is refined, down to a minimum cell size $\Delta x_{min}$ of 0.03 pc. This corresponds to level 12, or level 10 in the `\textsc{dense}' clouds. The box length $L_{box}$ and minimum cell size $\Delta x_{min}$ are listed in Table \ref{methods:cloudtable}.
+
+\subsection{Cooling and Radiative Transfer}
+\label{methods:cooling}
+
+We track the propagation of radiation across the full \AMR grid using the M1 method \citep{Rosdahl2013}. We track only photons above the ionisation energy of hydrogen, with photons binned into three groups bounded by the ionisation energies of HI, HeI and HeII. Each group uses a ``grey'' approximation, i.e. all photons in the group are considered to have the same energy, energy-weighted cross section and number-weighted cross section, using representative values from a stellar population as in \citet{Geen2017}. In each grid cell we store the photon density and flux for each group, and couple the photons to the gas at every hydrodynamic timestep. We track the ionisation state of hydrogen and helium in every \AMR cell.
+
+Each cell tracks radiative heating and cooling. Each cell has an ionisation fraction governed by photoionisation and recombination as calculated in the radiative transfer module described in \citet{Rosdahl2013}. The non-ionised fraction of the cell follows the cooling module of \citet{Audit2005} that follows fits to various coolants in an \ISM environment with a heating term from a radiation background below the ionisation energy of hydrogen. The ionised fraction gas follows the cooling and heating functions described in \citet{Rosdahl2013}, with photoionised metals described by a fit to \citet{Ferland2003}. Above $10^4$ K, we use a fit to \citet{Sutherland1993} where the cooling rate is higher than the photoionised model, since at higher temperatures the gas becomes collisionally ionised. The gas is initially taken to be at solar metallicity ($Z = 0.014$), with the advection of metals tracked as a passive scalar on the \AMR grid.
+
+\subsection{Sinks and Star Formation}
+
+If a gas cell is above 10\% of the Jeans density\footnote{Jeans density $\rho_J \equiv (c_s/L_{cell})^2/G$, where $c_s$ is the sound speed in the cell and $L_{cell}$ is the size of the cell. This calculation does not include support from B-fields.} at the highest refinement level, it is assigned to a ``clump'', i.e. a patch of dense gas. Clump peaks are identified using the ``watershed'' method, in which contours from high to low density are drawn, with clumps merged by identifying saddle points in the density field \citep{Bleuler2014}. If a clump is denser than the Jeans density at the highest refinement level, a sink particle is formed, and every timestep, 90\% of the mass in the clump above the Jeans density is accreted onto the sink particle \citep{Bleuler2014a}. This 90\% is a heuristic quantity to prevent zero or negative densities in accreting cells.
+
+Once the total mass in sinks in the cluster exceeds 120 \Msolar, we create an object representing a massive star of mass $M_*$ and attach it to the most massive sink, as in \citet{Geen2018}. In this paper we run simulations where $M_*$ is either 30, 60 or 120 \Msolar. We also run simulations with no stellar feedback. The star itself is a purely virtual object whose dynamics is traced by the sink. The object tracks the age of the star, which is used by the stellar evolution and feedback model. Since the goal of this paper is to isolate the role of winds and radiation around individual stars, we do not form further stars out of sinks. Instead, the sinks are used to trace the most physical location for the formation of the star. As we show in \citet{Geen2019}, the density profile around the star has a dramatic influence on the dynamics of the radiation and wind feedback.
+
+\subsection{Stellar Evolution and Feedback}
+
+We implement feedback from the massive star as the emission of ionising radiation and winds. The star is considered to start on the main sequence from the moment of formation, since we do not have the resolution to properly track the protostellar phase, which is typically $\sim 10^5$ years \citep{Hosokawa2009}. The radiation and winds are emitted from the position of the sink that the star is attached to.
+
+We follow the evolution of massive star models at solar metallicity ($Z=0.014$) computed by the Geneva model \citep{Ekstrom2012}, assuming the stars are rotating at 0.4 of the critical velocity. At each timestep we deposit radiation and winds onto the grid. The number of photons emitted per unit time in each group is calculated using individual stellar spectra extracted from \textsc{Starburst99} \citep{Leitherer2014} using the Geneva model. To calculate the number of photons emitted between time $t$ and $t+\Delta t$, we interpolate linearly between tables for each photon group at intervals of 5 \Msolar.
+
+In the current paper, we focus on the early stage of stellar evolution up to 1 Myr for stars above 30 \Msolar. For completeness, we include a description of our stellar evolution tracks including older and less massive stars.
+
+We inject winds every timestep in the same fashion. Stellar mass loss rates $\dot{m_*}$ and escape velocities $v_{esc,*}$ are taken from \citet{Ekstrom2012}. The Geneva models calculate mass-loss rates according to the prescription of \cite{Vink2000} and \cite{Vink2001} and scale them by 0.85. Note that mass loss rates are uncertain by a factor of 2-3 \citep{Keszthelyi2017,Puls2015,Smith2014}.
+
+We convert the escape velocity $v_{esc,*}$ at the stellar surface to terminal wind velocities $v_w$ using the corrections listed in \citet{Gatto2017}. We list these here for clarity.
+
+We first calculate an ``effective'' escape velocity $v_{eff,*}$ including the Eddington factor $\Gamma_e$, described in \citet{Lamers1993}, is a correction factor to the Newtonian gravity set by radiation pressure from the star. \citet{Vink2011} calculate that $\Gamma_e$ is typically between 0.4 and 0.95, and is approximately $3\times10^{-5} L_* / M_*$ where $L_*$ is the luminosity of the star and $M_*$ is the mass. The exact value, used in this work, is given by
+\begin{equation}
+\Gamma_e = \frac{\sigma_e \sigma_{SB} T_e^4}{g c},
+\end{equation}
+where $\sigma_{SB}$ is the Stefan-Boltzmann constant, $g$ is the surface gravity, $c$ is the speed of light,
+% Joki asked me to define the speed of light, it's not my fault
+ and $\sigma_e$ is the cross-section for electron-photon scattering per unit mass given by
+\begin{equation}
+\sigma_{e}= 0.4 (1 + I_{He}Y_{He}) / (1 + 4 Y_{He}) \mathrm{g cm}^{-2}
+\end{equation}
+where $I_{He}$ is the number of free electrons per He atom or ion, and $Y_{He}$  is the Helium abundance by number (approx 0.1). $I_{He}$ is zero below an effective surface temperature $T_e = 10^4$ K, 2 above $T_e = 2.5\times10^4$ K and 1 otherwise. Finally, $v_{eff,*}$ is calculated as
+\begin{equation}
+v_{eff,*}^2  =  (1 - \Gamma_e) v_{esc,*}^2.
+\end{equation}
+
+We divide massive stars into different classifications as in \citet{Crowther2007} and \citet{Georgy2012}. Stars with $T_e > 10^4$ K and a surface hydrogen fraction of less than 0.3 are Wolf Rayet (WR) stars. Stars below $T_{RSG} = 5000$ K are Red Supergiants (RSG). Stars at a temperature of $T_{BSG} = 8700$ K are Blue Supergiants (BSG) and stars between these two temperatures are Yellow Supergiants (YSG). Stars that do not fall into these categories are OB stars. We subdivide WR stars into categories WNL and WNE, and WC and WO, depending on the surface abundances of H, He, C, N and O. For these stars, $v_w$ is given using a clamped linear interpolation
+\begin{equation}
+\begin{aligned}
+v_w &= v_0 \mathrm{~if~} T_e < T_0 \\
+v_w &= v_1 \mathrm{~if~} T_e > T_1 \\
+v_w &= v_0 + (v_1 - v_0) \times (T_e - T_0) / (T_1 - T_0) \mathrm{~otherwise}
+\label{kwind}
+\end{aligned}
+\end{equation}
+where $v_0$ and $v_1$ are reference wind velocities in km/s. $T_0$ and $T_1$ are surface temperatures in units of $10^4$ K. For OB stars we use ($v_0,v_1,T_0,T_1$) = ($1.3 v_{eff,*},2.45 v_{eff,*},1.8,2.3$) . For WO and WC stars we use ($v_0,v_1,T_0,T_1$) = ($700,2800,2.0,8.0$), and for WNL and WNE stars ($v_0,v_1,T_0,T_1$) = (700,2100,2.0,5.0).
+
+For RSG stars, we use $v_w = 10 \mathrm{~km/s~} \times (L/L_{ref})^{1/4}$, where $L_{ref} \equiv 3 \times 10^4 L_{\odot}$. For YSG stars, we use  
+\begin{equation}
+\begin{aligned}
+v_w = 10 \mathrm{~km/s~} \times 10^{[(\mathrm{log}(T_e) - \mathrm{log}(T_{RSG})) / (\mathrm{log}(T_{BSG}) - \mathrm{log}(T_{RSG}))]},
+\end{aligned}
+\end{equation}
+in order to fit the argument of \citet{Gatto2017} that the geometric mean velocity in this range is 50 km/s, while RSG winds are typically somewhere above 10 km/s and BSG winds are 100 km/s. Mass loss rates from RSG and YSG stars are comparable to other massive stars, but the $v_w$ is lower. Thus stellar winds are typically much weaker for these stars than OB or WR winds, however. We further note that this field is subject to ongoing study, and as such this model does not represent the final word in winds from massive stars.
+
+We force the cells around each sink particle with a massive star to be at the highest refinement level. We inject winds in a 5 cell radius around the sink. Mass, momentum, energy and metals are injected evenly in all cells inside this radius. The injected momentum and energy are calculated as $\dot{m_*} v_w \mathrm{d}t$ and $\frac{1}{2} \dot{m_*} v_w^2 \mathrm{d}t$ respectively, where $\mathrm{d}t$ is the timestep. Since the energy term in \textsc{Ramses} is a sum of all energies in the cell, at low densities in the cell the injected mass and momentum dominate, and the solution becomes free-streaming. If the cell has a higher density, the injected mass and momentum have less of an impact on the final velocity of the cell, and the injected energy effectively becomes thermalised.
+
+We plot the resulting photon emission rates and wind properties in Appendix \ref{appendix:stellartracks}.
+
+Since our clouds have a shorter freefall time than the typical lifetime of a massive star, we do not include supernovae in this study. We also omit the effects of radiation pressure and non-ionising radiation. We leave this for future work in order to isolate the influence of stellar winds, although we suggest that it is likely to have an influence on the structure and evolution of the gas around very massive stars \citep[see][]{Geen2019}.
+
+\section{Results}
+\label{results}
+
+In this section we lay out the results of the simulations and the effect that winds have on the photoionisation region.
+
+We begin by laying out the broad results of the simulations. We then discuss the influence that winds specifically have on the system. Finally, we discuss what this means for observed systems and the interpretation of the effects of winds on nearby star-forming regions.
+
+\subsection{Global Evolution of the \HII Region}
+\label{results:global}
+
+\begin{figure*}
+	\includegraphics[width=1.9\columnwidth]{../plots/vis/multiray/multirayTime_NH_windset_30Msun0p2Myr_zoom0p25__y.pdf}
+	\includegraphics[width=1.9\columnwidth]{../plots/vis/multiray/multirayTime_NH_windset_60Msun0p2Myr_zoom0p25__y.pdf}
+	\includegraphics[width=1.9\columnwidth]{../plots/vis/multiray/multirayTime_NH_windset_120Msun0p2Myr_zoom0p25__y.pdf}
+	\includegraphics[width=1.9\columnwidth]{../plots/vis/multiray/multirayTime_NH_windset_120Msun_dense0p2Myr_zoom1p0__y.pdf}
+	\caption{Column density maps of each simulation. From top to bottom we plot results for the 30 \Msolar star, the 60 \Msolar star, the 120 \Msolar star, and the 120 \Msolar star in the \textsc{dense} cloud. From left to right are simulations without feedback, simulations with just UV photoionisation and simulations with both UV photoionisation and winds. Each image's width and height is 25\% of the total box length. The cyan contour shows the extent of the ionised gas around the star. The red contour shows the extent of the hot (above $10^6$ K, i.e. wind-shocked) gas around the star. Note that all sightlines in the UV\_120 and UVWIND\_120 images contain ionised gas. Note also that the exact timing of the snapshot shown in each simulation can vary by a small amount between simulations depending on the frequency of simulation outputs produced.}
+	\label{fig:columndensity}
+\end{figure*}
+
+In Figure \ref{fig:columndensity} we plot column density maps of each simulation at the same time relative to the freefall time of the cloud. The star forms in a filament in the upper left of the cloud, and structures move preferentially towards the top and bottom of the image in this projection. The wind bubble is contained within the \HII region. Since the feedback travels into a decreasing density gradient from the density peak in which the star forms, the \HII region expands rapidly in a ``champange'' flow, where warm photoionised gas streams out of the cloud and follows underdense channels. This is most evident in the simulations with a 120 \Msolar star, which has a larger photon emission rate.
+
+For the \textsc{dense} cloud, the wind bubble is contained around the star. This is because flows of neutral gas inside the cloud have trapped the wind bubble and prevented its escape, similar to the crushed or flickering \HII regions described in \cite{Peters2010} and \cite{Geen2015b}. A plume of hot gas is cut off from the star and hence the source of the wind. We discuss this phenomenon in more detail later in the paper.
+
+Note that the exact extent of the \HII region depends on the precise timing of the output, which can vary between simulations. See below for a comparison of the \HII region and wind bubble radii. In fully self-consistent simulations with multiple stars formed as in \cite{Geen2018}, we would expect the cloud to produce multiple massive stars if a single star is unable to end star formation in the cloud.
+
+%\begin{figure*}
+%	\includegraphics[width=2\columnwidth]{../plots/momentumatstarpos_both.pdf}
+%	\includegraphics[width=2\columnwidth]{../plots/momentumatstarpos_both_compare.pdf}
+%	\caption{Momentum injected in each simulation by the star. Top: Radial outwards momentum from the position of the star as a function of time in each simulation. Bottom: Difference in momentum between simulations including UV radiation with and without winds. A solid line indicates that the simulation including winds produces more momentum in outflows than an identical simulation without. A dashed line indicates that including winds produces less momentum.}
+%	\label{fig:momentum}
+%\end{figure*}
+
+\subsection{Radial Momentum from Driven Outflows}
+\label{results:momentum}
+
+\begin{figure*}
+	\includegraphics[width=1.9\columnwidth]{../plots/momentumatstarpos_both.pdf}
+	\caption{Radial outwards momentum from the position of the star as a function of time in each simulation. Dashed lines show the results of the UV photoionisation-only simulations, and solid lines show the result of simulations including both UV photoionisation and stellar winds.}
+	\label{fig:momentum}
+\end{figure*}
+
+The momentum in outflows from the star in each simulation is shown in Figure \ref{fig:momentum}. This is the momentum in gas flows away from the star over the whole simulation volume, rather than the momentum of the st ellar winds themselves. We show the momentum in simulations with photoionisation only, and simulations containing both photoionisation and stellar winds, in order to show the additional momentum imparted to the \HII region by winds.
+
+The boost in momentum from the 30 \Msolar case is negligible, but becomes larger as the stellar mass is increased. Winds never add more momentum to the flows around the star than photoionisation. We note that this momentum includes flows from the neutral gas around the star. We discuss how these flows interact with purely photoionised bubbles in \cite{Geen2015b} and \cite{Geen2016}.
+
+In \cite{Geen2019} we give an algebraic expression to describe the evolution of an efficiently cooled wind bubble embedded inside a photoionised \HII region. We characterise the behaviour of the wind bubble with the coefficient $C_w$. $C_w > 1$ if winds contribute more to the expansion of the \HII region than photoionisation, and $C_w < 1$ if photoionisation contributes more. Applying this analysis to our source, we find that $C_w = 0.01$ for the 30 \Msolar star, $0.11$ for the 60 \Msolar star, and $0.42$ for the 120 \Msolar star. This is broadly consistent with our findings that the contribution from winds in the 30 \Msolar star case is negligible, while as stellar mass increases, the contribution from winds becomes more apparent but is never the primary source of momentum from outflows.
+
+\subsection{Radial Evolution of Feedback Structures}
+\label{results:radius}
+
+\begin{figure*}
+	\includegraphics[width=1.9\columnwidth]{../plots/radius_both.pdf}
+	\caption{Sphericised radius of the \HII region and wind bubble as a function of time in each simulation. Thick outlined dashed lines show the \HII region radius in the UV photoionisation-only simulations, and thick outlined solid lines show the result of simulations including both UV photoionisation and stellar winds. Thin solid lines show the wind bubble radius in simulations including both UV photoionisation and winds. Sphericised radius $R_S$ is derived from the total volume $V$ of the \HII region or wind bubble $V = 4/3 \pi R_S^3$.}
+	\label{fig:radius}
+\end{figure*}
+
+We plot the ``sphericised'' radius of the \HII region and wind bubble in Figure \ref{fig:radius} for each simulation. The sphericised radius $R_S$ is defined via the total volume $V$ of the \HII region or wind bubble $V = 4/3 \pi R_S^3$. This quantity is used purely for diagnostic purposes, and does not assume that the region itself is spherical.
+
+The \HII regions grow slowly initially in simulations with the lower mass star, before accelerating as the \HII region accelerates out of the cloud in a ``champagne'' flow, before plateauing as it runs out of further cloud material to ionise. The radius of the \HII region in simulations with winds is only moderately larger than the radius without. The wind bubble itself is only a small fraction of the \HII region's radius in all cases, although it is a larger fraction in the DENSE cloud. As in Section \ref{results:global}, the flickering of the wind bubble in the DENSE cloud is seen at around 300 kyr.
+
+Note that the cell size at maximum refinement is 0.03 pc, so $\sim$0.1-0.3 pc should be considered our smallest effective resolution once the injection radius of 5 cells is considered. Note also that some simulations have lower time resolution than others due to the sampling intervals in these simulations. The slow appearance of the wind bubble in the 30 \Msolar simulations is due to the amount of time it takes for hot or fast structures identifiable as wind bubbles to form in the grid.
+
+In \cite{Geen2019} we predict that winds should be most important below a radius of 0.3 pc around 120 \Msolar stars, and below smaller radii for less massive stars. The finding that winds do not drive the radial expansion of the \HII region in these simulations is thus consistent with our analytic models. It suggests that winds should be considered more carefully on a protostellar scale, however, as in \cite{Kuiper2018}.
+
+%\begin{figure*}
+%\includegraphics[width=2\columnwidth]{../plots/tsfe_both.pdf}
+%\includegraphics[width=2\columnwidth]{../plots/tsfe_both_compare.pdf}
+%\caption{\protect\SFE, defined as the fraction of the initial gas mass converted to stars, in each simulation. Top: \protect\SFE as a function of time in each simulation. Bottom: Difference in \protect\SFE between simulations including UV radiation with and without winds. A solid line indicates that the simulation including winds produces more momentum in outflows than an identical simulation without. A dashed line indicates that including winds produces less momentum.}
+%\label{fig:tsfe}
+%\end{figure*}
+
+%\begin{figure*}
+%	\includegraphics[width=2\columnwidth]{../plots/tsfe_both.pdf}
+%	\caption{\protect\SFE, defined as the fraction of the initial gas mass converted to stars, as a function of time in each simulation.}
+%	\label{fig:tsfe}
+%\end{figure*}
+%
+%Figure \ref{fig:tsfe} shows the \SFE of the cloud in terms of fractional mass in gas in the cloud converted to stars (referred to as \TSFE in \cite{Geen2017}, \cite{He2019} and others). In the simulations containing 30 and 60 \Msolar stars, winds reduce \SFE in the first Myr by approximately 10\% compared to simulations with just UV photoionisation. The boost to \SFE in the initial 100 kyr could be due to compression from the winds, but it is also possibly due to the time that simulation outputs are taken in each simulation. In simulations with 120 \Msolar stars in both the \textsc{diffuse} and \textsc{dense} clouds, it is not clear whether winds have a significant effect or not on \SFE. 
+
+Winds do not have a significant effect on the momentum of outflows from the cloud or the radius of the \HII regions at the scales studied here (<1 pc to 10-100 pc). However, large wind bubbles are visible around observed \HII regions, and so they are not completely irrelevant to studies of real \HII regions. To understand better how wind bubbles evolve, we now study the evolution and energetics of the embedded wind bubble.
+
+\subsection{The Evolution of the Embedded Wind Bubble}
+\label{results:evolutionwindbubble}
+
+\begin{figure*}
+	\centerline{\includegraphics[width=0.80\columnwidth]{../plots/vis/slice/sliceTime_rho_windset_120Msun0p2Myr_zoom0p5__ywindonly.pdf} \includegraphics[width=0.80\columnwidth]{../plots/vis/slice/sliceTime_T_windset_120Msun0p2Myr_zoom0p5__ywindonly.pdf}}
+	\centerline{\includegraphics[width=0.80\columnwidth]{../plots/vis/slice/sliceTime_P_windset_120Msun0p2Myr_zoom0p5__ywindonly.pdf}
+	\includegraphics[width=0.80\columnwidth]{../plots/vis/slice/sliceTime_Lcool_windset_120Msun0p2Myr_zoom0p5__ywindonly.pdf}}
+	\caption{Slices through the simulation volume in the UV120 simulations, showing various properties of the gas. The images are shown in the y-axis of the Cartesian volume, with the slice taken through the y position of the star. Each image is 61 pc on-a-side, i.e. half of the total box length. From top left to bottom right, we plot mass density, temperature, thermal pressure and cooling rate (as luminosity per unit volume). The positions of sink particles are shown as white dots. The low pressure region to the right is the shadow behind the remaining neutral gas in the cloud. Most of the simulation volume is already photoionised.}
+	\label{fig:windslices}
+\end{figure*}
+
+\subsubsection{Overview}
+\label{results:evolutionwindbubble:overview}
+
+To illustrate the internal structure of the wind bubble in the 120 \Msolar case, we show slices through the \HII region in Figure \ref{fig:windslices}. The plane of the slice is set at the y position of the star. The structure of the bubble agrees in qualitative terms with the schematic presented in \cite{Weaver1977}. In this paper, the authors describe different phases in the wind bubble. Around the star, a free-streaming wind leaves the star as material travels outwards at the terminal velocity of the wind. At some radius, the wind shocks against the ambient medium, creating a hot diffuse bubble. Since the hot wind bubble is collisionally ionised, ionising photons from the star are not strongly absorbed by it and photoionise the gas outside the wind bubble. Thus, the warm photoionised nebula is found outside the wind bubble.
+
+The 3D geometry of the wind is very different from the spherical models of \cite{Weaver1977}, however. Once the bubble has reached a sufficient pressure, it is able to punch through the now photoionised cloud and escape into the surrounding medium. The bubble has two structures, 1) a conical \textit{chimney} extending from the star upwards into lower-pressure gas and 2) above the chimney, an extended \textit{plume} that expands into the lower-density background.
+
+\subsubsection{Interaction with the Photoionised Region}
+\label{results:evolutionwindbubble:interaction}
+
+Around the star is a free-streaming region that has a lower thermal pressure. Its structure is set instead by ram pressure. The initial temperature of the wind is high since the wind should be ionised due to interaction with stellar radiation. However, the temperature is also elevated due to self-shocking as a numerical consequence of placing spherical flows onto a Cartesian grid. Since flows cannot travel in a perfectly radial direction along a Cartesian grid, flow vectors will interact as they travel across the grid, causing artificial shocking. This artefact can be reduced but not entirely mitigated, although we note that as long as the flow remains adiabatic and largely kinetic, its importance is negligible.
+
+Outside of this region, the free-streaming wind shocks against the background, thermalising the kinetic energy and creating a hot bubble of $10^7$ to $10^8$ K. This bubble is in pressure equilibrium with the photoionised gas. It has a similar thermal pressure to the photoionised gas around it. The entire bubble has a lower density than the surrounding photoionised region but has a significantly higher temperature.
+
+The majority of the simulated volume is at this point ionised by ``champagne'' flows \citep{Bodenheimer1979,TenorioTagle1979,Whitworth1979}, in which photoionised gas rapidly overtakes the cloud as the ionisation front expands into lower densities around the density peak in which the star(s) formed. The temperature of the photoionised gas achieves a roughly constant equilibrium temperature of around $10^4$ K. The cloud at this point follows the mode described in \cite{Franco1990} where the expansion of the cloud is driven by a pressure difference created by the remaining density gradient in the cloud. \cite{Franco1990} argues that this expansion occurs at a few times the speed of sound $c_i$ in the ionised gas, where $c_i\sim10$ km/s.
+
+\subsubsection{From Embedded Wind Bubbles to Isolated Hot Plumes}
+\label{results:evolutionwindbubble:phases}
+
+Since the temperature of wind-blown bubble is around $10^4$ times that of the photoionised gas, its sound speed is approximately 100 times faster. This creates a much faster flow that seeks pressure equilibrium by following the density gradient in the photoionised cloud. In simulations using the 30 \Msolar star, this bubble is elongated as it moves preferentially through underdensities in the cloud. However, it is still mostly contained within the cloud. With the 120 \Msolar star, the winds have sufficient luminosity to create a chimney-and-plume structure that escapes the cloud.
+
+The cooling inside the wind bubble is much lower than in its surroundings. Most of the cooling in the wind bubble occurs at the interface between the wind and the surrounding medium. The energy losses from the photoionised gas are considerably higher due to the large amount of energy lost to recombination cooling \citep[see the analysis by][]{Walch2012}. 
+
+The plume phase does not have to have a corresponding chimney phase. The hot chimney can be cut off temporarily if a dense flow interacts with the wind, leaving a cut-off plume. The chimney will re-establish itself shortly after. This gives the impression of the wind bubble reaching radii towards the edge of the bubble without it actually interacting with gas closer to the star. An example of this happening in the \textsc{dense} cloud is shown in the contours in Figure \ref{fig:columndensity}. We discuss this phase in more detail in the following Sections.
+
+\subsection{The Energetics of the Embedded Wind Bubble}
+\label{results:energeticswindbubble}
+
+\subsubsection{How much Energy is Retained by the Wind Bubble?}
+
+\begin{figure*}
+\includegraphics[width=1.98\columnwidth]{../plots/windLemittedvscool_both.pdf}
+\caption{Wind luminosity (solid line) versus rate of energy loss to radiative cooling in the wind bubble (dashed line) as a function of time in each simulation containing winds. The wind bubble is identified as gas that is above 100 km/s or $10^5$ K (see Section \protect\ref{results:energeticswindbubble}). Emitted luminosity values are sampled from the stellar evolution tables (see Section \protect\ref{methods}) for the star's age at each timestep in the simulation. The gap from 0 to 0.1 Myr is due to limited frequency of simulation outputs. There is a further delay in cooling in UVWIND\_30 due to the time taken to heat the cells around the star to above $10^5$ K.}
+\label{fig:windLemittedvscool}
+\end{figure*}
+
+In Figure \ref{fig:windLemittedvscool} we plot the wind luminosity emitted by the star versus the energy lost to radiative cooling as a function of time in the hot wind bubble (i.e. ignoring radiative losses in the warm or cold gas). We identify cells as being in the wind bubble if they are either a) hotter than $10^5$ K or b) contain flows faster than 100 km/s with respect to the static reference frame. The cooling rate inside the wind bubble is, as shown in Figure \ref{fig:windslices}, only a few percent of the emitted wind luminosity. 
+
+As shown in Figure \ref{fig:windslices}, wind cools fastest as a function of volume in the interface between the hot wind bubble and the warm photoionised gas, not inside the wind bubble, which is much more diffuse than its surroundings. We thus do not find a large fraction of the wind luminosity to be lost to radiative cooling via hot x-ray emission, but rather from cooling in cooler, denser gas in the mixing layer. In the lower right image of Figure \ref{fig:windslices}, this extra cooling is visible as a shell of higher cooling around the wind bubble. This is chiefly visible in the top of the image where the wind plume is escaping the photoionised remnants of the cloud. Closer to the star, this increased cooling is difficult to detect against the recombination cooling signal in the photoionised gas. Disentangling the primary mode of cooling from winds from the recombination cooling of the photoionised gas in observed regions around it is thus likely to be difficult and would need careful analysis.
+
+\cite{Rogers2013} and \cite{Dale2014} argue that a further mode of cooling of wind bubbles could come from the ablation of dense clumps inside the wind bubble. However, we do not observe such dense clumps inside our bubble. This may be because we only model one wind source, and such clumps may occur as wind bubbles from multiple stars merge. The interaction between colliding winds around nearby stars such as binaries may also lead to non-adiabatic cooling. Simulations show evidence for significant clump formation at smaller scales in interacting stellar winds in close binaries \citep{Calderon2020} and the Galactic centre \citep{Calderon2020a}. A further channel for clumping is the time-variability of wind velocities in the Wolf-Rayet phase \citep[see review by][]{Wade2011}.
+
+We do find an additional process temporarily affecting the cooling rate in the \textsc{dense} cloud in Figure \ref{fig:windLemittedvscool}. The wind source is temporarily quenched by dense gas flows around the massive star, analogous to the ``flickering'' of \HII regions observed by \cite{Peters2010}. This cuts off the wind chimney and leaves an isolated plume. This event is only temporary, and the whole event lasts only around 200 kyr.
+
+\begin{figure*}
+	\includegraphics[width=1.98\columnwidth]{../plots/windenergy_both.pdf}
+	\caption{Energy in the wind bubble as a function of time in each simulation containing winds, showing kinetic energy (dotted line), thermal energy (dashed line) and the total of the two (solid line). The wind bubble is identified as gas that is above 100 km/s or $10^5$ K (see Section \protect\ref{results:energeticswindbubble}).}
+	\label{fig:windenergy}
+\end{figure*}
+
+As discussed in Section \ref{results:evolutionwindbubble}, the wind bubble is divided into a free-streaming region driven by fast flows, and a shocked, thermalised region. In Figure \ref{fig:windenergy}, the 30 and 60 \Msolar stars produce a bubble that is largely thermalised, shown by the smaller quantity of kinetic energy compared to thermal energy. In the bubbles around the 120 \Msolar star in both the \textsc{diffuse} and \textsc{dense} clouds, there is a rough equipartition of energy, with the \textsc{dense} cloud even exhibiting more kinetic than thermal energy in the wind bubble at times.
+
+\begin{figure*}
+	\includegraphics[width=1.98\columnwidth]{../plots/windenergyretained_both.pdf}
+	\caption{Fraction of energy emitted by stellar winds retained in the wind bubble as a function of time for each simulation containing winds. The wind bubble is identified as gas that is above 100 km/s or $10^5$ K (see Section \protect\ref{results:energeticswindbubble}).}
+	\label{fig:windenergyretained}
+\end{figure*}
+
+Approximately 1\% of the energy emitted by the star is retained in the wind bubble, as shown in Figure \ref{fig:windenergyretained}. More energy is retained the more massive the star is. 
+
+Note that this ignores any energy transferred to the gas outside the wind bubble. However, since the speeds in this gas are typically lower, kinetic energy will be higher inside the bubble. Similarly, given the high cooling rates outside the bubble, we posit that most of the energy transferred to the gas outside the bubble is lost to cooling.
+
+\subsubsection{Estimating the Cooling Time of the Wind Bubble}
+
+\begin{figure*}
+	\includegraphics[width=1.98\columnwidth]{../plots/findHIIdensities.pdf}
+	\caption{Distribution of densities on the interface between the wind bubble and the gas outside as a function of time in each simulation that includes stellar winds. The median density is shown as a solid line. The minimum and maximum densities are shown as dotted lines. Dashed lines show the interquartile range (capturing 50\% of the distribution).}
+	\label{fig:findHIIdensities}
+\end{figure*}
+
+\begin{figure}
+\includegraphics[width=0.98\columnwidth]{../plots/coolingtime.pdf}
+\caption{Estimated cooling time $t_{cool}$ of the wind bubble as a function of time in each simulation containing winds. The cooling time is calculated using Equation \ref{equation:tcool}. The external density $n_0$ is taken to be the median density plotted in Figure \ref{fig:findHIIdensities}, and the wind luminosity is taken from the stellar evolution tables. See Section \ref{results:energeticswindbubble} for a discussion of this calculation and some caveats.}
+\label{fig:coolingtimes}
+\end{figure}
+
+\cite{MacLow1988} use \cite{Cowie1977}'s spherical evaporation model to quantify the cooling of a wind bubble based on mass evaporation from the surface of the bubble. They give a cooling time $t_c$ of
+\begin{equation}
+t_{cool} = (2.3 \times 10^4 \mathrm{yr}) n_0^{-0.71} L_{38}^{0.29}
+\label{equation:tcool}
+\end{equation}
+where $n_0$ is the density of the ambient medium around the wind bubble and $L_{38}$ is the wind luminosity in units of $10^{38}$ erg/s. The total cooling rate is an inverse function of $t_{cool}$. In other words, cooling becomes more efficient with higher external density and less efficient with higher wind luminosities. \cite{MacLow1988} also include a model for the cooling of the bubble itself, which we have established is relatively inefficient in our simulations.
+
+ In Figure \ref{fig:findHIIdensities}, we plot the distribution of densities around the wind bubble as a function of time in order to estimate $t_{cool}$. There is a large distribution of densities around the wind bubble, with some dense structures remaining in certain locations (particularly in the denser cloud) while in other directions the wind bubble pushes through much lower density channels, often below 1 cm$^{-3}$. Since the bubble around the 120 \Msolar star expands faster, the divergence between high and low densities is higher. The impact of the plume break-off in the dense cloud is evident at around 0.3 Myr, where the median density drops rapidly and then jumps as dense structures pass through the star and cut off the wind bubble briefly.
+ 
+ We use the median density from this plot as a function of time to calculate $t_{cool}$ using Equation \ref{equation:tcool} as a function of time in each simulation. We plot this in Figure \ref{fig:coolingtimes}. Note that this is a very rough estimate of the cooling time - it ignores factors such as the geometry and expansion rate of our cooled bubble.
+ 
+ In all of our simulations, $t_{cool}$ increases over time as the bubble expands into lower density material. However, at least in the first Myr of the star's life that we track, the winds do not cool more slowly than the lifetime of the star, and hence the majority of the energy emitted by the star will be lost to radiative cooling.
+ 
+ In order to achieve a cooling time above 1 Myr, we would have to model either a supermassive, dense cluster emitting winds into a single bubble, or reduce the ambient density by a factor of $\sim 10^3$. It is possible that once the cloud is completely destroyed, such conditions could exist, but we do not capture such conditions in the simulations in this paper.
+
+\section{Are Winds in Molecular Clouds Effective?}
+\label{effective}
+
+In this section we discuss whether winds play a significant role in driving \HII regions or shaping the properties of molecular clouds with embedded star clusters in light of the results shown in Section \ref{results}.
+
+\subsection{Distribution of Radiative Emission}
+\label{effective:radiativeemission}
+
+We have simulated a set of clouds containing a massive star emitting ionising radiation and winds. We have established that, when the wind luminosity is high enough, it can create a chimney of hot gas with an extended plume that appears once it reaches the ambient medium. 
+
+We find that energy from winds typically couple inefficiently to the gas, consistent with the findings of \cite{Dale2014}. However, \cite{Guedel2007} and \cite{Pabst2019} have argued from observations that the presence of extended x-ray emission reaching the edge of unstable \HII regions such as the Orion Veil points to winds being effective at filling the volume of the region and driving outflows. As we state in the previous Section, it is not easy to find strong evidence for cooling from wind bubbles mixing with the warm photoionised gas around the wind bubble owing to the presence of strong recombination cooling in the same gas.
+
+\begin{figure*}
+	\centerline{\includegraphics[width=0.66\columnwidth]{../plots/vis/multiray/multirayTime_coolemission_windset_120Msun0p2Myr_zoom0p5__ywindonly.pdf} \includegraphics[width=0.66\columnwidth]{../plots/vis/multiray/multirayTime_ionemission_windset_120Msun0p2Myr_zoom0p5__ywindonly.pdf}
+	\includegraphics[width=0.66\columnwidth]{../plots/vis/multiray/multirayTime_xrayemission2_windset_120Msun0p2Myr_zoom0p5__ywindonly.pdf}}
+	\caption{Maps of radiative cooling of gas at different temperatures in the UVWIND\_120 simulation at 0.2 Myr after the 120 \Msolar star is formed. The left panel shows radiative cooling losses along the line of sight for gas below 1000 K. The middle panel shows recombination losses from photoionised gas ($n_e n_H$ projected along the line of sight). The right panel shows radiative cooling losses along the line of sight for gas above $10^6$ K. Each measure is not normalised and should be considered in relative terms. Full synthetic observations are beyond the scope of this paper.}
+	\label{fig:emission_bands}
+\end{figure*}
+
+
+%\begin{figure*}
+%	\centerline{\includegraphics[width=0.66\columnwidth]{../plots/vis/multiray/multirayTime_coolemission_windset_120Msun_dense0p2Myr_zoom1p0__ywindonly.pdf} \includegraphics[width=0.66\columnwidth]{../plots/vis/multiray/multirayTime_ionemission_windset_120Msun_dense0p2Myr_zoom1p0__ywindonly.pdf}
+%		\includegraphics[width=0.66\columnwidth]{../plots/vis/multiray/multirayTime_xrayemission2_windset_120Msun_dense0p2Myr_zoom1p0__ywindonly.pdf}}
+%	\caption{EMISSION PROPERTIES DENSE TEST}
+%	\label{fig:emission_bands_dense}
+%\end{figure*}
+
+\begin{figure*}
+	\includegraphics[width=0.99\columnwidth]{../plots/vis/multiray/multirayTime_coolemission_ionemission_xrayemission2__windset_30Msun0p2Myr_zoom0p5__ywindonly.pdf} \includegraphics[width=0.99\columnwidth]{../plots/vis/multiray/multirayTime_coolemission_ionemission_xrayemission2__windset_60Msun0p2Myr_zoom0p5__ywindonly.pdf}
+	\includegraphics[width=0.99\columnwidth]{../plots/vis/multiray/multirayTime_coolemission_ionemission_xrayemission2__windset_120Msun0p2Myr_zoom0p5__ywindonly.pdf} \includegraphics[width=0.99\columnwidth]{../plots/vis/multiray/multirayTime_coolemission_ionemission_xrayemission2__windset_120Msun_dense0p2Myr_zoom1p0__ywindonly.pdf}
+	\caption{Maps of various radiative properties of the gas projected in the y axis in each simulation including stellar winds at 0.2 Myr after the star is formed, as shown individually in Figure \ref{fig:emission_bands}. Green shows the projected cooling rate of cool gas (below 1000 K). Orange shows the recombination rate in ionised gas. Purple shows the projected cooling rate of hot gas (above $10^6$ K). From top left to bottom right we plot results for the 30 \Msolar star, the 60 \Msolar star, the 120 \Msolar star, and the 120 \Msolar star in the \textsc{dense} cloud. Each value is normalised to arbitrary units for the purposes of visual comparison.}
+	\label{fig:observability_yproj}
+\end{figure*}
+
+One question is whether extended wind bubbles are observable even when they are not the principal drivers of the \HII region. In Figure \ref{fig:emission_bands} we plot the total radiative emission by gas at various temperatures. We leave extensive synthetic observations for future work due to the complexity of the problem, and focus on the total radiative emission from gas at different temperatures. The left plot shows the cooling rate of gas below 1000 K. The middle plot shows a recombination emission measure, i.e. $n_e n_H$ where $n_e$ is the density of free electrions and $n_H$ is the hydrogen density. The right plot shows the cooling rate of gas above $10^6$ K.
+
+Photoionised gas exists in most projected pixels in Figure \ref{fig:emission_bands}, and so we do not see a well-defined photoionised bubble embedded in a neutral cloud. The only detectable structure in the ionised emission is from the remnants of the now-photoionised cloud. This is because $n_e n_H$ is higher here than in the more diffuse background.
+
+Cool gas remains to the right of the star in the left-hand image of Figure \ref{fig:emission_bands}, since the \HII region and wind bubble move preferentially into lower-density channels. This is visible in the hot chimney-and-plume expanding upwards in the right-hand image. Despite contributing at best 10\% of any given dynamical property to the system, extended wind emission can be seen in radiation from the hot bubble. This is impossible in a purely spherical model of wind bubbles embedded in \HII regions, since there is no way in these 1D models for the hot chimney to form preferentially in one direction.
+
+In Figure \ref{fig:observability_yproj} we overplot these bands for each simulation containing both photoionisation and winds. In Appendix \ref{appendix:emission_additional_projections} we include 2 further projections to illustrate the complex geometry of the wind bubbles in all simulations.
+
+When the wind luminosity is strong enough, winds can easily escape the cloud, while not having a significant impact on properties such as \SFE or outflow momentum. This is because they have a significantly higher sound speed than the photoionised gas, and so rapidly follow pressure gradients to fill underpressurised volumes.
+
+As stated in Section \ref{results:energeticswindbubble}, radiative losses from hot gas are only a small fraction of the total radiative losses of energy injected by the wind. Tracking the total radiative losses from winds is hard since they are masked by losses from the photoionised gas.
+
+\subsection{Other Effects}
+\label{effective:intheend}
+
+The conclusion of the paper thus far is that our simulations demonstrate that winds are not effective at driving outflows on molecular cloud scales, but that they can still create large structures that have complex geometries. The broad findings of this work, including the energetics, are consistent with previous theoretical work. However, there are a number of possible differences between our simulations (and other relevant simulation work) and observed systems that would boost the dynamical efficiency of winds. We do not include these effects in order to isolate the perturbation on photoionised \HII regions created by winds, and will return to these additional effects in future work.
+
+Firstly, radiation pressure (not included in this work) is able to alter the average density of the photoionised region as in \cite{Draine2011}, by pushing the photoionised gas into a denser shell. Authors such as \cite{Pellegrini2007} and \cite{Yeh2012} argue that winds further compress photoionised \HII regions when radiation pressure is included by adding an additional pressure to the inside of the \HII region. Denser photoionised regions have a higher recombination rate, increasing their cooling rate and reducing the efficiency of photoionisation.
+
+Secondly, if the thickness of the mixing layer around the wind bubble is better resolved, there is the possibility that the hot bubble and denser photoionised gas are more separate, and hence the cooling rate from mixing is lower (see Section \ref{introduction}).
+
+Thirdly, the presence of multiple massive stars in the same region can boost the effect of winds. In \cite{Geen2019} we predict that as the number of stars in one wind bubble increases, so does the relative efficiency of the winds. However, as stated in Section \ref{results:energeticswindbubble}, the cluster would have to be very large to make a significant impact.
+
+Fourthly, our simulations have a relatively underdense external medium with no accretion. It is possible that \HII regions embedded in larger structures with inflows constraining their expansion would have different properties. For example, \cite{Pabst2019} find no evidence of wind breakouts in the Orion Veil nebula. More careful work comparing observed regions to simulations is needed to address this issue. In particular, full synthetic observations with accurate ray tracing are needed to account for the census of photons from different emission lines that are visible in observational studies.
+
+Fifthly, this work focusses on the expansion of wind bubbles around young ($<$1 Myr old) stars. As \cite{Rahner2017} argues for older, more massive clusters, winds are boosted at late times relative to ionising radiation emission. However, this depends on the stellar evolution model used. \cite{Sana2012} observed that the majority of massive stars are in interacting binaries, strongly affecting their evolution. One of the results of this is that the extended envelopes of these stars are removed by binary interactions, allowing for higher ionising emission rates at late times. Accurate stellar evolution models are thus a crucial component in studies of feedback in \HII regions.
+
+Future work will widen the scope of this study to include the combined effect of winds and radiation pressure, and study how wind bubbles from multiple stars interact in simulations with self-consistent star formation and more sophisticated stellar evolution models.
+
+\section{Conclusions}
+\label{conclusions}
+
+We simulate a set of molecular clouds containing a single massive star of either 30, 60 or 120 \Msolar formed self-consistently using sink particles in clouds of two different densities. We track photoionisation and stellar winds produced by the star.
+
+We find that winds contribute at most 10\% to the outflow momentum in the first Myr of the lifetime of the star, and have only a small impact on the radial expansion of \HII regions. Similarly, we find that winds cool efficiently over a short timescale ($\sim 10^4$ yr) compared to the lifetime of the star (a few Myr or more).
+
+We show that one possible factor that confuses the interpretation of observed systems is that winds produce ``chimney-and-plume'' structures that efficiently tunnel through photoionised clouds to produce large, hot volumes of gas away from the sites of star formation. These are much more directional than the ``champagne'' flows produced by photoionisation. We also find a case where plumes exist without chimneys for 100-200 kyr due to dense flows inside the cloud cutting off the source of the wind.
+
+We demonstrate that this gives the impression that winds can appear to be volume-filling despite not contributing significantly to the regulation of star formation or outflows from the cloud. However, targetted studies are needed to compare directly to observed \HII regions and to explain the structure and expansion rate of these regions. In addition to this, we will expand these studies to include more complete microphysics and stellar evolution models.
+
+\section*{Acknowledgements}
+
+The authors would like to thank Jo Puls, Xander Tielens, Cornelia Pabst, Patrick Hennebelle, Eric Pellegrini, Daniel Rahner, Ralf Klessen and Lex Kaper for useful discussions during the writing of this paper. The simulations in this paper were performed on the Dutch National Supercomputing cluster Cartesius at SURFsara. The authors gratefully acknowledge the data storage service SDS@hd supported by the Ministry of Science, Research and the Arts Baden-W\"urttemberg (MWK) and the German Research Foundation (DFG) through grant INST 35/1314-1 FUGG. Postprocessing was performed on the ISMSIM computing resources hosted by ITA, ZAH, University of Heidelberg. The project also made use of the SURFsara ResearchDrive facility for remote data sharing. SG acknowledges support from a NOVA grant for the theory of massive star formation.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%% REFERENCES %%%%%%%%%%%%%%%%%%
+
+% The best way to enter references is to use BibTeX:
+
+\bibliographystyle{mnras}
+\bibliography{samgeen} % if your bibtex file is called example.bib
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%% APPENDICES %%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+%
+%\section{Appendix Blah}
+%
+%APPENDIX
+\section{Stellar Tracks}
+\label{appendix:stellartracks}
+
+In this section we plot radiation and wind properties for each of the stellar tracks featured in this paper (see Section \ref{methods}). In Figure \ref{fig:stellartracks} we plot cumulative wind energy output, wind luminosity, wind mass loss, and photon emission rates in bands ionising hydrogen and helium.
+
+\begin{figure*}
+	\includegraphics[width=1\columnwidth]{../plots/stellarevolution_windenergy.pdf} 
+	\includegraphics[width=1\columnwidth]{../plots/stellarevolution_photoHII.pdf}
+	\includegraphics[width=1\columnwidth]{../plots/stellarevolution_windlum.pdf}
+	\includegraphics[width=1\columnwidth]{../plots/stellarevolution_photoHeII.pdf}
+	\includegraphics[width=1\columnwidth]{../plots/stellarevolution_windmassloss.pdf}
+	\includegraphics[width=1\columnwidth]{../plots/stellarevolution_photoHeIII.pdf}
+	\caption{Wind and radiation outputs for each of the stellar tracks featured in this paper (30, 60 and 120 \Msolar stars). The left column shows wind properties: from top to bottom, cumulative energy output from winds, wind luminosity ($1/2 \dot{m}_* v_w^2$) and wind mass loss rate. The right column shows photon emission rate in groups bounded by the ionisation energy of, from top to bottom, HII, HeII and HeIII. See Section \ref{methods} for more details.}
+	\label{fig:stellartracks}
+\end{figure*}
+
+\section{Emission - Additional Projections}
+\label{appendix:emission_additional_projections}
+
+In order to better illustrate the complex geometry of the different structures in the simulated \HII regions, we present additional projections of the structures shown in Figure \ref{fig:observability_yproj}. These are shown in Figures \ref{fig:observability_xproj} and \ref{fig:observability_zproj}
+
+
+\begin{figure*}
+	\includegraphics[width=1\columnwidth]{../plots/vis/multiray/multirayTime_coolemission_ionemission_xrayemission2__windset_30Msun0p2Myr_zoom0p5__xwindonly.pdf} \includegraphics[width=1\columnwidth]{../plots/vis/multiray/multirayTime_coolemission_ionemission_xrayemission2__windset_60Msun0p2Myr_zoom0p5__xwindonly.pdf}
+	\includegraphics[width=1\columnwidth]{../plots/vis/multiray/multirayTime_coolemission_ionemission_xrayemission2__windset_120Msun0p2Myr_zoom0p5__xwindonly.pdf} \includegraphics[width=1\columnwidth]{../plots/vis/multiray/multirayTime_coolemission_ionemission_xrayemission2__windset_120Msun_dense0p2Myr_zoom1p0__xwindonly.pdf}
+	\caption{As in Figure \ref{fig:observability_yproj} but in the x axis.}
+	\label{fig:observability_xproj}
+\end{figure*}
+
+\begin{figure*}
+	\includegraphics[width=1\columnwidth]{../plots/vis/multiray/multirayTime_coolemission_ionemission_xrayemission2__windset_30Msun0p2Myr_zoom0p5__zwindonly.pdf} \includegraphics[width=1\columnwidth]{../plots/vis/multiray/multirayTime_coolemission_ionemission_xrayemission2__windset_60Msun0p2Myr_zoom0p5__zwindonly.pdf}
+	\includegraphics[width=1\columnwidth]{../plots/vis/multiray/multirayTime_coolemission_ionemission_xrayemission2__windset_120Msun0p2Myr_zoom0p5__zwindonly.pdf} \includegraphics[width=1\columnwidth]{../plots/vis/multiray/multirayTime_coolemission_ionemission_xrayemission2__windset_120Msun_dense0p2Myr_zoom1p0__zwindonly.pdf}
+	\caption{As in Figure \ref{fig:observability_yproj} but in the z axis.}
+	\label{fig:observability_zproj}
+\end{figure*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Don't change these lines
+\bsp	% typesetting comment
+\label{lastpage}
+\end{document}
+
+% End of mnras_template.tex

@@ -1,0 +1,51 @@
+This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: amunpaper.aux
+The style file: mnras.bst
+Database file #1: samgeen.bib
+Warning--I didn't find a database entry for "Others2013"
+Warning--I didn't find a database entry for "Author2012"
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+You've used 25 entries,
+            2881 wiz_defined-function locations,
+            955 strings with 12981 characters,
+and the built_in function-call counts, 11976 in all, are:
+= -- 943
+> -- 947
+< -- 64
++ -- 401
+- -- 154
+* -- 1445
+:= -- 1954
+add.period$ -- 0
+call.type$ -- 25
+change.case$ -- 50
+chr.to.int$ -- 25
+cite$ -- 25
+duplicate$ -- 560
+empty$ -- 548
+format.name$ -- 228
+if$ -- 2043
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 25
+newline$ -- 88
+num.names$ -- 184
+pop$ -- 109
+preamble$ -- 1
+purify$ -- 100
+quote$ -- 0
+skip$ -- 342
+stack$ -- 0
+substring$ -- 640
+swap$ -- 298
+text.length$ -- 100
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 225
+warning$ -- 0
+while$ -- 190
+width$ -- 0
+write$ -- 261
+(There were 2 warnings)
